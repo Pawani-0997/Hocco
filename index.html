@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Rishu's Website</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rishu's Website - Review and Confirm Order</title>
+<meta name="description" content="Final confirmation stage. Password re-entry is required after the order total is confirmed.">
 <style>
   :root {
     --bg: #eef0f3;
@@ -13,18 +14,12 @@
     --line: #d6dbe2;
     --accent: #24507a;
     --accent-ink: #ffffff;
-    --accent-soft: #e3edf6;
-    --warn: #9c2a2a;
-    --warn-bg: #fbeaea;
+    --done: #2e7d4f;
     --caution-bg: #fff4dc;
-    --caution-line: #e2b652;
-    --shadow: 0 1px 2px rgba(20, 30, 45, .08);
-    box-sizing: border-box;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    --caution-line: #d9a63c;
   }
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
+    :root {
       --bg: #14171b;
       --surface: #1d2126;
       --ink: #e8ebef;
@@ -32,475 +27,130 @@
       --line: #333a43;
       --accent: #7fb2e5;
       --accent-ink: #0e1a26;
-      --accent-soft: #22303f;
-      --warn: #f19a9a;
-      --warn-bg: #3a2222;
+      --done: #6cc38f;
       --caution-bg: #382f18;
       --caution-line: #8a6d24;
-      --shadow: none;
     }
   }
-  :root[data-theme="dark"] {
-    --bg: #14171b;
-    --surface: #1d2126;
-    --ink: #e8ebef;
-    --muted: #9aa4b1;
-    --line: #333a43;
-    --accent: #7fb2e5;
-    --accent-ink: #0e1a26;
-    --accent-soft: #22303f;
-    --warn: #f19a9a;
-    --warn-bg: #3a2222;
-    --caution-bg: #382f18;
-    --caution-line: #8a6d24;
-    --shadow: none;
-  }
-
-  html { scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 64px); }
-  *, *::before, *::after { box-sizing: inherit; }
+  *, *::before, *::after { box-sizing: border-box; }
   body {
     margin: 0;
     background: var(--bg);
     color: var(--ink);
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     line-height: 1.55;
-    -webkit-text-size-adjust: 100%;
   }
-
-  /* Shell navigation */
-  .shell-nav {
-    position: sticky;
-    top: env(safe-area-inset-top, 0px);
-    z-index: 10;
+  header.site-header {
     background: var(--surface);
     border-bottom: 1px solid var(--line);
   }
-  .shell-nav .inner {
-    max-width: 880px;
-    margin: 0 auto;
-    padding: 0 16px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    overflow-x: auto;
+  header.site-header .inner {
+    max-width: 680px; margin: 0 auto; padding: 14px 16px;
+    display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
   }
-  .brand {
-    font-weight: 700;
-    letter-spacing: .01em;
-    padding: 14px 16px 14px 0;
-    margin-right: 8px;
-    border-right: 1px solid var(--line);
-    color: var(--ink);
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  .shell-nav a.tab {
-    padding: 14px 12px;
-    color: var(--muted);
-    text-decoration: none;
-    font-size: .93rem;
-    white-space: nowrap;
-    border-bottom: 3px solid transparent;
-  }
-  .shell-nav a.tab:hover { color: var(--ink); }
-  .shell-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
-  a:focus-visible, button:focus-visible, input:focus-visible {
-    outline: 3px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  main { max-width: 880px; margin: 0 auto; padding: 28px 16px 56px; }
-  main:focus { outline: none; }
-  .view[hidden] { display: none; }
-
-  /* Home */
-  .home h1 { font-size: clamp(1.7rem, 4vw, 2.3rem); line-height: 1.15; margin: 0 0 10px; letter-spacing: -.01em; }
-  .home .lede { color: var(--muted); max-width: 60ch; margin: 0 0 28px; }
-  .index { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-  .index a {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 4px 16px;
-    align-items: baseline;
-    padding: 16px 18px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-left: 5px solid var(--accent);
-    border-radius: 6px;
-    color: inherit;
-    text-decoration: none;
-  }
-  .index a:hover { background: var(--accent-soft); }
-  .index .name { font-weight: 650; font-size: 1.05rem; }
-  .index .file { color: var(--muted); font-size: .82rem; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-  .index .desc { grid-column: 1 / -1; color: var(--muted); font-size: .93rem; }
-
-  /* Mock site frame */
-  .site {
+  .brand { font-weight: 700; }
+  .signed-in { color: var(--muted); font-size: .9rem; }
+  main { max-width: 680px; margin: 0 auto; padding: 28px 16px 56px; }
+  .card {
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 8px;
-    box-shadow: var(--shadow);
-    padding: clamp(20px, 5vw, 40px);
-    max-width: 640px;
-    margin: 0 auto;
+    padding: clamp(20px, 5vw, 36px);
   }
-  .site h1 { font-size: clamp(1.5rem, 3.6vw, 1.9rem); line-height: 1.2; margin: 0 0 6px; }
-  .site h2 { font-size: 1.1rem; margin: 0 0 6px; }
-  .stage { color: var(--muted); font-size: .9rem; margin: 0 0 22px; }
-  .row {
-    display: flex; justify-content: space-between; gap: 16px;
-    padding: 12px 0; border-bottom: 1px solid var(--line);
-  }
-  .row .amt { font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .row.total { border-bottom: 0; font-weight: 700; font-size: 1.1rem; padding-top: 16px; }
-  .btn {
-    display: inline-block;
-    font: inherit; font-weight: 600;
-    padding: 12px 20px;
-    border: 0; border-radius: 6px;
-    background: var(--accent); color: var(--accent-ink);
-    cursor: pointer;
-  }
-  .btn.block { width: 100%; }
-  .btn:hover { filter: brightness(1.08); }
+  h1 { font-size: clamp(1.5rem, 3.6vw, 1.9rem); line-height: 1.2; margin: 0 0 4px; }
+  h2 { font-size: 1.15rem; margin: 0 0 8px; }
+  .stage { color: var(--muted); margin: 0 0 22px; }
 
-  /* Forced re-auth */
-  .verify {
-    margin-top: 20px;
-    padding: 16px;
-    border: 1px solid var(--caution-line);
-    background: var(--caution-bg);
-    border-radius: 6px;
+  ol.progress {
+    list-style: none; margin: 0 0 24px; padding: 0;
+    display: grid; gap: 8px;
   }
-  .verify p { margin: 0 0 14px; }
-  .verify label { display: block; font-weight: 600; margin-bottom: 6px; }
-  .verify input {
-    width: 100%; font: inherit; padding: 10px 12px;
+  ol.progress li {
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    color: var(--muted);
+  }
+  ol.progress li.done { color: var(--done); border-color: var(--done); }
+  ol.progress li.current { color: var(--ink); border: 2px solid var(--caution-line); background: var(--caution-bg); font-weight: 600; }
+
+  table.order { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+  table.order th, table.order td { padding: 12px 0; border-bottom: 1px solid var(--line); text-align: left; }
+  table.order td.amt, table.order th.amt { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  table.order tr.total th, table.order tr.total td { border-bottom: 0; font-size: 1.1rem; font-weight: 700; }
+
+  section.verify {
+    margin-top: 24px;
+    padding: 20px;
+    border: 2px solid var(--caution-line);
+    background: var(--caution-bg);
+    border-radius: 8px;
+  }
+  section.verify p { margin: 0 0 12px; }
+  section.verify label { display: block; font-weight: 600; margin-bottom: 6px; }
+  section.verify input[type="password"] {
+    width: 100%; font: inherit; padding: 11px 12px;
     border: 1px solid var(--line); border-radius: 6px;
     background: var(--surface); color: var(--ink);
     margin-bottom: 14px;
   }
-
-  /* Hidden cost */
-  .fee { color: var(--warn); font-weight: 600; }
-  .footnote {
-    margin: 14px 0 0; padding: 10px 12px;
-    background: var(--warn-bg); color: var(--warn);
-    border-radius: 6px; font-size: .88rem;
+  button.proceed {
+    width: 100%; font: inherit; font-weight: 600;
+    padding: 13px 20px; border: 0; border-radius: 6px;
+    background: var(--accent); color: var(--accent-ink); cursor: pointer;
   }
-  .cta-wrap { margin-top: 22px; text-align: right; }
-
-  /* Confirmshaming */
-  .shame { text-align: center; }
-  .shame .eyebrow { color: var(--accent); font-weight: 700; font-size: .8rem; letter-spacing: .08em; margin: 0 0 8px; }
-  .shame p.body { color: var(--muted); max-width: 46ch; margin: 10px auto 24px; }
-  .shame .decline {
-    display: block; margin: 16px auto 0; max-width: 46ch;
-    background: none; border: 0; padding: 4px;
-    font: inherit; font-size: .82rem; color: var(--muted);
-    text-decoration: underline; cursor: pointer;
-  }
-
-  /* Roach motel */
-  .terms { display: grid; gap: 14px; margin-top: 18px; }
-  .panel { border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; }
-  .panel.easy { border-left: 5px solid #2e8b57; }
-  .panel.hard { border-left: 5px solid var(--warn); }
-  .panel p { margin: 0; color: var(--muted); }
-  .asym { margin: 20px 0 0; font-size: .93rem; }
-  .asym strong { color: var(--ink); }
-
-  .back { display: inline-block; margin: 0 0 16px; color: var(--muted); font-size: .9rem; }
-  .back:hover { color: var(--ink); }
-
-  /* Confirmshaming: home promo + popup */
-  .promo {
-    margin-top: 28px;
-    padding: 22px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    text-align: center;
-  }
-  .promo h2 { margin: 0 0 6px; font-size: 1.25rem; }
-  .promo p { margin: 0 auto 16px; max-width: 46ch; color: var(--muted); }
-  .decline-link {
-    display: block; margin: 14px auto 0; max-width: 46ch;
-    background: none; border: 0; padding: 4px;
-    font: inherit; font-size: .8rem; color: var(--muted);
-    text-decoration: underline; cursor: pointer;
-  }
-
-  /* Hidden cost: featured product on home */
-  .product {
-    margin-top: 28px;
-    padding: 20px 22px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 6px 20px;
-    align-items: center;
-  }
-  .product h2 { margin: 0; font-size: 1.2rem; }
-  .product .sub { color: var(--muted); margin: 0; font-size: .93rem; }
-  .product .price { font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
-  .product .price small { font-size: .85rem; font-weight: 500; color: var(--muted); }
-  .product .buy { grid-column: 1 / -1; margin-top: 8px; text-align: center; text-decoration: none; }
-  @media (max-width: 480px) {
-    .product { grid-template-columns: 1fr; }
-    .product .price { text-align: left; }
-  }
-
-  .modal-backdrop { position: fixed; inset: 0; z-index: 50;
-    background: rgba(10, 14, 20, .6);
-    display: flex; align-items: center; justify-content: center;
-    padding: calc(16px + env(safe-area-inset-top, 0px)) 16px calc(16px + env(safe-area-inset-bottom, 0px));
-  }
-  .modal-backdrop[hidden] { display: none; }
-  .modal {
-    width: 100%; max-width: 420px;
-    background: var(--surface); color: var(--ink);
-    border-radius: 10px;
-    padding: 28px 24px 20px;
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, .35);
-  }
-  .modal .eyebrow { color: var(--accent); font-weight: 700; font-size: .8rem; letter-spacing: .08em; margin: 0 0 8px; }
-  .modal h2 { margin: 0 0 8px; font-size: 1.5rem; line-height: 1.2; }
-  .modal p.body { margin: 0 0 20px; color: var(--muted); }
+  .no-alt { margin: 14px 0 0; font-size: .9rem; color: var(--muted); }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 </style>
 </head>
 <body>
 
-<nav class="shell-nav" aria-label="Test pages">
+<header class="site-header">
   <div class="inner">
-    <a class="brand" href="#/">Rishu's Website</a>
-    <a class="tab" href="#/forced-reauth" data-route="forced-reauth">Forced re-auth</a>
-    <a class="tab" href="#/hidden-cost" data-route="hidden-cost">Hidden cost</a>
-    <a class="tab" href="#/confirmshaming" data-route="confirmshaming">Confirmshaming</a>
-    <a class="tab" href="#/roach-motel" data-route="roach-motel">Roach motel</a>
+    <span class="brand">Rishu's Website</span>
+    <span class="signed-in">You are already signed in as rishu@example.com</span>
   </div>
-</nav>
+</header>
 
-<main id="main" tabindex="-1">
+<main>
+  <div class="card">
+    <h1>Review and Confirm Order</h1>
+    <p class="stage">Final Confirmation Stage</p>
 
-  <!-- HOME -->
-  <section class="view home" data-view="home" data-title="Rishu's Website">
-    <h1>Rishu's Website</h1>
-    <p class="lede">Four mock checkout and membership flows, each built around one dark pattern, combined into a single site for auditing.</p>
-    <ul class="index">
-      <li><a href="#/forced-reauth">
-        <span class="name">Forced re-authentication</span><span class="file">forced_reauth_test</span>
-        <span class="desc">A password re-entry demand appears only after the order total is confirmed.</span></a></li>
-      <li><a href="#/hidden-cost">
-        <span class="name">Hidden cost</span><span class="file">hidden_cost_test</span>
-        <span class="desc">A mandatory fee shows up only on the final confirmation screen.</span></a></li>
-      <li><a href="#/confirmshaming">
-        <span class="name">Confirmshaming</span><span class="file">confirmshaming_test</span>
-        <span class="desc">The decline option is worded to make the user feel guilty.</span></a></li>
-      <li><a href="#/roach-motel">
-        <span class="name">Roach motel</span><span class="file">roach_motel_test</span>
-        <span class="desc">Signing up takes one click; cancelling takes a phone call or a notarized letter.</span></a></li>
-    </ul>
+    <ol class="progress" aria-label="Checkout progress">
+      <li class="done">Step 1 of 3: Cart reviewed (complete)</li>
+      <li class="done">Step 2 of 3: Order total confirmed at $39.99 (complete)</li>
+      <li class="current" aria-current="step">Step 3 of 3: Password re-entry required (current step)</li>
+    </ol>
 
-    <div class="product" id="home-product">
-      <div>
-        <h2>Rishu Coffee Club</h2>
-        <p class="sub">Artisan Roast Blend, delivered monthly. Standard ground delivery included.</p>
-      </div>
-      <div class="price">$19.99 <small>/ month</small></div>
-      <a class="btn buy" href="#/checkout">Buy now</a>
-    </div>
+    <table class="order">
+      <tbody>
+        <tr>
+          <th scope="row">Cloud Storage Pro (Annual Plan)</th>
+          <td class="amt">$39.99</td>
+        </tr>
+        <tr class="total">
+          <th scope="row">Total Confirmed Cost:</th>
+          <td class="amt">$39.99</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div class="promo" id="home-promo">
-      <h2>Get 20% off your first order</h2>
-      <p>Join Rishu's Insider list for exclusive deals, early access and members-only savings.</p>
-      <button type="button" class="btn">Yes, I want to save 20%</button>
-      <button type="button" class="decline-link">No thanks, I don't like saving money</button>
-    </div>
-  </section>
+    <section class="verify" id="mandatory-security-verification" aria-labelledby="verify-title">
+      <h2 id="verify-title">Mandatory Security Verification</h2>
+      <p>Password re-entry required after order total is confirmed. You must re-enter your account password to proceed with this $39.99 purchase.</p>
+      <p>You are already signed in to this account, but you will be asked for your password again before the purchase can be completed.</p>
 
-  <!-- 1. FORCED RE-AUTH -->
-  <section class="view" data-view="forced-reauth" data-title="VISH Test - Forced Re-auth Flow" hidden>
-    <a class="back" href="#/">&larr; All tests</a>
-    <div class="site">
-      <h1>Review and Confirm Order</h1>
-      <p class="stage">Final Confirmation Stage</p>
+      <form id="reauth-form" action="#" method="post" onsubmit="return false;">
+        <label for="account-password">Account Password:</label>
+        <input id="account-password" name="account_password" type="password" autocomplete="off" required>
+        <button type="submit" class="proceed">Confirm Password and Proceed</button>
+      </form>
 
-      <div class="row"><span>Cloud Storage Pro (Annual Plan)</span><span class="amt">$39.99</span></div>
-      <div class="row total"><span>Total Confirmed Cost:</span><span class="amt">$39.99</span></div>
-
-      <div class="verify">
-        <h2>Mandatory Security Verification</h2>
-        <p>Password re-entry required after order total is confirmed. You must re-enter your account password to proceed with this $39.99 purchase.</p>
-        <label for="reauth-pw">Account Password:</label>
-        <input id="reauth-pw" type="password" autocomplete="off">
-        <button type="button" class="btn block">Confirm Password and Proceed</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- 2. HIDDEN COST -->
-  <section class="view" data-view="hidden-cost" data-title="Apex Coffee Subscription - Checkout" hidden>
-    <a class="back" href="#/">&larr; All tests</a>
-    <div class="site">
-      <h1>Order Summary &amp; Final Confirmation</h1>
-      <p class="stage">Apex Coffee Subscription</p>
-
-      <div class="row"><span>Artisan Roast Blend (Monthly)</span><span class="amt">$19.99</span></div>
-      <div class="row"><span>Standard Ground Delivery</span><span class="amt">Free</span></div>
-      <div class="row fee"><span>+ Mandatory Platform Service Fee:</span><span class="amt">$4.99</span></div>
-
-      <p class="footnote">* $4.99 fee shown only at final confirmation. This mandatory processing surcharge was undisclosed during initial $19.99 selection.</p>
-
-      <div class="row total"><span>Final Total Due:</span><span class="amt">$24.98</span></div>
-
-      <div class="cta-wrap">
-        <button type="button" class="btn">Continue to Payment Method &rarr;</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- 3. CONFIRMSHAMING -->
-  <section class="view" data-view="confirmshaming" data-title="VISH Test - Confirmshaming Flow" hidden>
-    <a class="back" href="#/">&larr; All tests</a>
-    <div class="site shame">
-      <p class="eyebrow">SECURITY UPGRADE</p>
-      <h1>Protect Your Account Today</h1>
-      <p class="body">Enable advanced breach protection and 24/7 dark web identity monitoring for your account.</p>
-      <button type="button" class="btn">Yes, Protect My Account</button>
-      <button type="button" class="decline">No thanks, I do not care about my account security and prefer risking identity theft</button>
-    </div>
-  </section>
-
-  <!-- 4. ROACH MOTEL -->
-  <section class="view" data-view="roach-motel" data-title="VISH Test - Roach Motel Flow" hidden>
-    <a class="back" href="#/">&larr; All tests</a>
-    <div class="site">
-      <h1>Membership Terms &amp; Subscription Policy</h1>
-
-      <div class="terms">
-        <div class="panel easy">
-          <h2>Starting Membership (1-Click)</h2>
-          <p>Instant 1-click signup. Immediate access granted with no verification delay.</p>
-        </div>
-        <div class="panel hard">
-          <h2>Cancelling Membership</h2>
-          <p>Online cancellation is not supported. You must call phone support or mail physical letter.</p>
-        </div>
-      </div>
-
-      <p class="asym"><strong>Cancellation Terms (Asymmetry):</strong> To cancel your active membership, online cancellation is disabled. Subscribers must place an international phone call to customer service during limited business hours (Monday 9 AM - 10 AM EST only), or send a notarized physical letter by certified post with 60 days advance notice.</p>
-    </div>
-  </section>
-  <!-- CHECKOUT (hidden cost revealed at final confirmation) -->
-  <section class="view" data-view="checkout" data-title="Rishu's Website - Checkout" hidden>
-    <a class="back" href="#/">&larr; Back to home</a>
-    <div class="site">
-      <h1>Order Summary &amp; Final Confirmation</h1>
-      <p class="stage">Rishu Coffee Club</p>
-
-      <div class="row"><span>Artisan Roast Blend (Monthly)</span><span class="amt">$19.99</span></div>
-      <div class="row"><span>Standard Ground Delivery</span><span class="amt">Free</span></div>
-      <div class="row fee"><span>+ Mandatory Platform Service Fee:</span><span class="amt">$4.99</span></div>
-
-      <p class="footnote">* $4.99 fee shown only at final confirmation. This mandatory processing surcharge was undisclosed during initial $19.99 selection.</p>
-
-      <div class="row total"><span>Final Total Due:</span><span class="amt">$24.98</span></div>
-
-      <div class="verify">
-        <h2>Mandatory Security Verification</h2>
-        <p>Password re-entry required after order total is confirmed. You must re-enter your account password to proceed with this $24.98 purchase.</p>
-        <label for="checkout-pw">Account Password:</label>
-        <input id="checkout-pw" type="password" autocomplete="off">
-        <button type="button" class="btn block">Confirm Password and Proceed</button>
-      </div>
-
-      <div class="cta-wrap">
-        <button type="button" class="btn">Continue to Payment Method &rarr;</button>
-      </div>
-    </div>
-  </section>
-
+      <p class="no-alt">There is no way to finish this purchase without re-entering your password.</p>
+    </section>
+  </div>
 </main>
 
-<!-- Confirmshaming popup (shown on every page load) -->
-<div class="modal-backdrop" id="promo-modal" role="dialog" aria-modal="true" aria-labelledby="promo-title" hidden>
-  <div class="modal">
-    <p class="eyebrow">WAIT, DON'T GO</p>
-    <h2 id="promo-title">Get 20% off your first order</h2>
-    <p class="body">Join Rishu's Insider list for exclusive deals, early access and members-only savings.</p>
-    <button type="button" class="btn block" id="promo-accept">Yes, I want to save 20%</button>
-    <button type="button" class="decline-link" id="promo-decline">No thanks, I'd rather pay full price and miss out on great deals</button>
-  </div>
-</div>
-
-<script>
-  (function () {
-    var modal = document.getElementById('promo-modal');
-    var accept = document.getElementById('promo-accept');
-    var decline = document.getElementById('promo-decline');
-    var shell = [document.querySelector('.shell-nav'), document.getElementById('main')];
-
-    function setInert(on) {
-      shell.forEach(function (el) {
-        if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert');
-      });
-    }
-    function open() {
-      modal.hidden = false;
-      setInert(true);
-      accept.focus();
-    }
-    function close() {
-      modal.hidden = true;
-      setInert(false);
-    }
-
-    accept.addEventListener('click', close);
-    decline.addEventListener('click', close);
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && !modal.hidden) close();
-    });
-
-    open();
-  })();
-</script>
-
-<script>
-  (function () {
-    var views = document.querySelectorAll('.view');
-    var tabs = document.querySelectorAll('.shell-nav a.tab');
-    var main = document.getElementById('main');
-
-    function route() {
-      var key = (location.hash || '').replace(/^#\/?/, '') || 'home';
-      var match = null;
-      views.forEach(function (v) {
-        var on = v.getAttribute('data-view') === key;
-        v.hidden = !on;
-        if (on) match = v;
-      });
-      if (!match) {
-        match = document.querySelector('[data-view="home"]');
-        match.hidden = false;
-        key = 'home';
-      }
-      tabs.forEach(function (t) {
-        if (t.getAttribute('data-route') === key) t.setAttribute('aria-current', 'page');
-        else t.removeAttribute('aria-current');
-      });
-      document.title = match.getAttribute('data-title');
-      window.scrollTo(0, 0);
-      main.focus({ preventScroll: true });
-    }
-
-    window.addEventListener('hashchange', route);
-    route();
-  })();
-</script>
 </body>
 </html>
