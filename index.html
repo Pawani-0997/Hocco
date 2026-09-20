@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rishu's Website - Review and Confirm Order</title>
-<meta name="description" content="Final confirmation stage. Password re-entry is required after the order total is confirmed.">
+<meta name="description" content="Review and confirm your Cloud Storage Pro order.">
 <style>
   :root {
     --bg: #eef0f3;
@@ -61,18 +61,6 @@
   h2 { font-size: 1.15rem; margin: 0 0 8px; }
   .stage { color: var(--muted); margin: 0 0 22px; }
 
-  ol.progress {
-    list-style: none; margin: 0 0 24px; padding: 0;
-    display: grid; gap: 8px;
-  }
-  ol.progress li {
-    padding: 10px 14px;
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    color: var(--muted);
-  }
-  ol.progress li.done { color: var(--done); border-color: var(--done); }
-  ol.progress li.current { color: var(--ink); border: 2px solid var(--caution-line); background: var(--caution-bg); font-weight: 600; }
 
   table.order { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
   table.order th, table.order td { padding: 12px 0; border-bottom: 1px solid var(--line); text-align: left; }
@@ -99,7 +87,6 @@
     padding: 13px 20px; border: 0; border-radius: 6px;
     background: var(--accent); color: var(--accent-ink); cursor: pointer;
   }
-  .no-alt { margin: 14px 0 0; font-size: .9rem; color: var(--muted); }
   a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 </style>
 </head>
@@ -117,12 +104,6 @@
     <h1>Review and Confirm Order</h1>
     <p class="stage">Final Confirmation Stage</p>
 
-    <ol class="progress" aria-label="Checkout progress">
-      <li class="done">Step 1 of 3: Cart reviewed (complete)</li>
-      <li class="done">Step 2 of 3: Order total confirmed at $39.99 (complete)</li>
-      <li class="current" aria-current="step">Step 3 of 3: Password re-entry required (current step)</li>
-    </ol>
-
     <table class="order">
       <tbody>
         <tr>
@@ -139,15 +120,12 @@
     <section class="verify" id="mandatory-security-verification" aria-labelledby="verify-title">
       <h2 id="verify-title">Mandatory Security Verification</h2>
       <p>Password re-entry required after order total is confirmed. You must re-enter your account password to proceed with this $39.99 purchase.</p>
-      <p>You are already signed in to this account, but you will be asked for your password again before the purchase can be completed.</p>
 
       <form id="reauth-form" action="#" method="post" onsubmit="return false;">
         <label for="account-password">Account Password:</label>
         <input id="account-password" name="account_password" type="password" autocomplete="off" required>
         <button type="submit" class="proceed">Confirm Password and Proceed</button>
       </form>
-
-      <p class="no-alt">There is no way to finish this purchase without re-entering your password.</p>
     </section>
   </div>
 </main>
