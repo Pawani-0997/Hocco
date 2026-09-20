@@ -213,6 +213,43 @@
 
   .back { display: inline-block; margin: 0 0 16px; color: var(--muted); font-size: .9rem; }
   .back:hover { color: var(--ink); }
+
+  /* Confirmshaming: home promo + popup */
+  .promo {
+    margin-top: 28px;
+    padding: 22px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    text-align: center;
+  }
+  .promo h2 { margin: 0 0 6px; font-size: 1.25rem; }
+  .promo p { margin: 0 auto 16px; max-width: 46ch; color: var(--muted); }
+  .decline-link {
+    display: block; margin: 14px auto 0; max-width: 46ch;
+    background: none; border: 0; padding: 4px;
+    font: inherit; font-size: .8rem; color: var(--muted);
+    text-decoration: underline; cursor: pointer;
+  }
+
+  .modal-backdrop {
+    position: fixed; inset: 0; z-index: 50;
+    background: rgba(10, 14, 20, .6);
+    display: flex; align-items: center; justify-content: center;
+    padding: calc(16px + env(safe-area-inset-top, 0px)) 16px calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+  .modal-backdrop[hidden] { display: none; }
+  .modal {
+    width: 100%; max-width: 420px;
+    background: var(--surface); color: var(--ink);
+    border-radius: 10px;
+    padding: 28px 24px 20px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .35);
+  }
+  .modal .eyebrow { color: var(--accent); font-weight: 700; font-size: .8rem; letter-spacing: .08em; margin: 0 0 8px; }
+  .modal h2 { margin: 0 0 8px; font-size: 1.5rem; line-height: 1.2; }
+  .modal p.body { margin: 0 0 20px; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -247,6 +284,13 @@
         <span class="name">Roach motel</span><span class="file">roach_motel_test</span>
         <span class="desc">Signing up takes one click; cancelling takes a phone call or a notarized letter.</span></a></li>
     </ul>
+
+    <div class="promo" id="home-promo">
+      <h2>Get 20% off your first order</h2>
+      <p>Join Rishu's Insider list for exclusive deals, early access and members-only savings.</p>
+      <button type="button" class="btn">Yes, I want to save 20%</button>
+      <button type="button" class="decline-link">No thanks, I don't like saving money</button>
+    </div>
   </section>
 
   <!-- 1. FORCED RE-AUTH -->
@@ -324,6 +368,49 @@
   </section>
 
 </main>
+
+<!-- Confirmshaming popup (shown on every page load) -->
+<div class="modal-backdrop" id="promo-modal" role="dialog" aria-modal="true" aria-labelledby="promo-title" hidden>
+  <div class="modal">
+    <p class="eyebrow">WAIT, DON'T GO</p>
+    <h2 id="promo-title">Get 20% off your first order</h2>
+    <p class="body">Join Rishu's Insider list for exclusive deals, early access and members-only savings.</p>
+    <button type="button" class="btn block" id="promo-accept">Yes, I want to save 20%</button>
+    <button type="button" class="decline-link" id="promo-decline">No thanks, I'd rather pay full price and miss out on great deals</button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var modal = document.getElementById('promo-modal');
+    var accept = document.getElementById('promo-accept');
+    var decline = document.getElementById('promo-decline');
+    var shell = [document.querySelector('.shell-nav'), document.getElementById('main')];
+
+    function setInert(on) {
+      shell.forEach(function (el) {
+        if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert');
+      });
+    }
+    function open() {
+      modal.hidden = false;
+      setInert(true);
+      accept.focus();
+    }
+    function close() {
+      modal.hidden = true;
+      setInert(false);
+    }
+
+    accept.addEventListener('click', close);
+    decline.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modal.hidden) close();
+    });
+
+    open();
+  })();
+</script>
 
 <script>
   (function () {
