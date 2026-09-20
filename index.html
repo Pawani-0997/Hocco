@@ -232,8 +232,29 @@
     text-decoration: underline; cursor: pointer;
   }
 
-  .modal-backdrop {
-    position: fixed; inset: 0; z-index: 50;
+  /* Hidden cost: featured product on home */
+  .product {
+    margin-top: 28px;
+    padding: 20px 22px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px 20px;
+    align-items: center;
+  }
+  .product h2 { margin: 0; font-size: 1.2rem; }
+  .product .sub { color: var(--muted); margin: 0; font-size: .93rem; }
+  .product .price { font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+  .product .price small { font-size: .85rem; font-weight: 500; color: var(--muted); }
+  .product .buy { grid-column: 1 / -1; margin-top: 8px; text-align: center; text-decoration: none; }
+  @media (max-width: 480px) {
+    .product { grid-template-columns: 1fr; }
+    .product .price { text-align: left; }
+  }
+
+  .modal-backdrop { position: fixed; inset: 0; z-index: 50;
     background: rgba(10, 14, 20, .6);
     display: flex; align-items: center; justify-content: center;
     padding: calc(16px + env(safe-area-inset-top, 0px)) 16px calc(16px + env(safe-area-inset-bottom, 0px));
@@ -284,6 +305,15 @@
         <span class="name">Roach motel</span><span class="file">roach_motel_test</span>
         <span class="desc">Signing up takes one click; cancelling takes a phone call or a notarized letter.</span></a></li>
     </ul>
+
+    <div class="product" id="home-product">
+      <div>
+        <h2>Rishu Coffee Club</h2>
+        <p class="sub">Artisan Roast Blend, delivered monthly. Standard ground delivery included.</p>
+      </div>
+      <div class="price">$19.99 <small>/ month</small></div>
+      <a class="btn buy" href="#/checkout">Buy now</a>
+    </div>
 
     <div class="promo" id="home-promo">
       <h2>Get 20% off your first order</h2>
@@ -364,6 +394,26 @@
       </div>
 
       <p class="asym"><strong>Cancellation Terms (Asymmetry):</strong> To cancel your active membership, online cancellation is disabled. Subscribers must place an international phone call to customer service during limited business hours (Monday 9 AM - 10 AM EST only), or send a notarized physical letter by certified post with 60 days advance notice.</p>
+    </div>
+  </section>
+  <!-- CHECKOUT (hidden cost revealed at final confirmation) -->
+  <section class="view" data-view="checkout" data-title="Rishu's Website - Checkout" hidden>
+    <a class="back" href="#/">&larr; Back to home</a>
+    <div class="site">
+      <h1>Order Summary &amp; Final Confirmation</h1>
+      <p class="stage">Rishu Coffee Club</p>
+
+      <div class="row"><span>Artisan Roast Blend (Monthly)</span><span class="amt">$19.99</span></div>
+      <div class="row"><span>Standard Ground Delivery</span><span class="amt">Free</span></div>
+      <div class="row fee"><span>+ Mandatory Platform Service Fee:</span><span class="amt">$4.99</span></div>
+
+      <p class="footnote">* $4.99 fee shown only at final confirmation. This mandatory processing surcharge was undisclosed during initial $19.99 selection.</p>
+
+      <div class="row total"><span>Final Total Due:</span><span class="amt">$24.98</span></div>
+
+      <div class="cta-wrap">
+        <button type="button" class="btn">Continue to Payment Method &rarr;</button>
+      </div>
     </div>
   </section>
 
